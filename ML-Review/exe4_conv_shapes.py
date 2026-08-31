@@ -33,6 +33,7 @@ Concrete trace, two conv layers, actual pixel indices:
 Layer 1: kernel=3, stride=1, on a 1D input [0,1,2,3,4,5,...].
 - output1[0] = built from input [0,1,2]
 - output1[1] = built from input [1,2,3]
+- output1[2] = built from input [2,3,4]
 
 So output1's receptive field = 3 pixels (rf=3). Moving one step in output1 (index 0→1) shifts the input window by exactly 1 pixel — that's jump=1. Formula check: rf = 1 + (3-1)·1 = 3 ✓, jump = 1·1 = 1 ✓.
 

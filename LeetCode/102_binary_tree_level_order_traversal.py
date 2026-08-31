@@ -156,3 +156,38 @@ def level_order(root: TreeNode) -> list[list[int]]:
 
 
 print(level_order(root))
+
+
+# ---
+
+def level_order_with_nulls(root: TreeNode) -> list[list]:
+    """
+    Same BFS, but keeps None placeholders for missing children instead of
+    skipping them — mirrors LeetCode's [3,9,20,null,null,15,7] serialization.
+    Stops once a level is entirely None, so it doesn't run forever.
+
+    Time: O(n) — n real nodes, plus at most 2n None placeholders visited once.
+    Space: O(n) — queue holds at most one level's worth of nodes/Nones.
+    """
+    queue = deque([root])
+    result = []
+
+    while any(node is not None for node in queue):
+        level_size = len(queue)
+        level = []
+        for _ in range(level_size):
+            node = queue.popleft()
+            if node is None:
+                level.append(None)
+                queue.append(None)
+                queue.append(None)
+                continue
+            level.append(node.val)
+            queue.append(node.left)
+            queue.append(node.right)
+        result.append(level)
+
+    return result
+
+
+print(level_order_with_nulls(root))

@@ -80,6 +80,23 @@ def removeElement_two_pointer(nums: list[int], val: int) -> int:
     return k
 
 
+def removeElement_list_remove(nums: list[int], val: int) -> int:
+    """
+    v3: naive removal via list.remove() - repeatedly find and remove the first
+    occurrence of val until none remain, then return the new length. Reads as
+    "just pop it", but list.remove() re-scans nums from the start to find val
+    and then shifts every element after it left by one - both costs the other
+    two versions make explicit are still happening here, just hidden behind a
+    single line.
+    Time: O(n^2) worst case - up to n removals, each an O(n) scan + O(n) shift.
+    Space: O(1) extra - list.remove() mutates nums in place.
+    """
+    while val in nums:
+        nums.remove(val)
+
+    return len(nums)
+
+
 """
 Confirmed still correct — this is the exact same removeElement I already tested (all 6 cases passed), nothing's changed. Let me trace it properly this time, matching what the code actually does: the shift happens when nums[i] == val, not the other way around like I wrongly described before.
 
@@ -134,6 +151,12 @@ for nums, val, expected_k, expected_prefix in test_cases:
     prefix_tp = nums_tp[:k_tp]
     ok_tp = check(k_tp, prefix_tp, val, expected_k, expected_prefix)
 
+    nums_rm = list(nums)
+    k_rm = removeElement_list_remove(nums_rm, val)
+    prefix_rm = nums_rm[:k_rm]
+    ok_rm = check(k_rm, prefix_rm, val, expected_k, expected_prefix)
+
     print(f"   val={val}  (expected k={expected_k})")
     print(f"     brute force: k={k_bf}  prefix={prefix_bf}  {'OK' if ok_bf else 'MISMATCH'}")
     print(f"     two pointer: k={k_tp}  prefix={prefix_tp}  {'OK' if ok_tp else 'MISMATCH'}")
+    print(f"     list.remove: k={k_rm}  prefix={prefix_rm}  {'OK' if ok_rm else 'MISMATCH'}")
